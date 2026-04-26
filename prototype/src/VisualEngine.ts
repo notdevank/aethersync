@@ -83,7 +83,7 @@ export class VisualEngine {
     this.material.uniforms.uRippleTime.value = 0;
   }
 
-  public update(elapsed: number, audioParams: any, _rawData: Uint8Array | null) {
+  public update(elapsed: number, audioParams: any) {
     this.material.uniforms.uTime.value = elapsed;
     this.material.uniforms.uBass.value = audioParams.bass;
     this.material.uniforms.uMids.value = audioParams.mids;
@@ -96,5 +96,16 @@ export class VisualEngine {
     this.mesh.scale.set(scale, scale, scale);
 
     this.composer.render();
+  }
+
+  public addRotation(deltaX: number, deltaY: number) {
+    if (!this.mesh) return;
+    this.mesh.rotation.y += deltaX;
+    this.mesh.rotation.x += deltaY;
+  }
+
+  public updateParams(params: any) {
+    // Basic implementation to handle slider updates if needed
+    if (params.mountainIntensity !== undefined) this.material.uniforms.uMountainIntensity.value = params.mountainIntensity;
   }
 }
