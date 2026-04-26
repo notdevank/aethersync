@@ -2,6 +2,10 @@
 
 **AetherSynth** is a browser-based generative audio-visual environment. It allows users to interact with a high-fidelity visual system that reacts to microphone input and user interactions.
 
+## ℹ️ About AetherSynth
+
+AetherSynth was developed as an experimental creative project within the **Obsidialith** workspace. It explores the intersection of generative art, fluid dynamics, and live audio analysis. The project aims to create a "delightful non-distraction"—a digital environment that remains beautiful and engaging even without direct user input, while rewarding interaction with organic, reactive motion.
+
 ## ✨ Core Features
 
 -   **Audio-Reactive Visuals**: A Three.js-based system that responds dynamically to audio frequencies (Bass, Mids, and Treble).
@@ -50,10 +54,6 @@ The project is automatically deployed to GitHub Pages:
 -   `Active/Creative/AetherSynth/`: Project root (Workspace reference).
 -   `prototype/`: Contains the source code and build configuration.
 -   `.github/workflows/`: CI/CD configuration for automatic deployment.
-
-## 🎨 Design Philosophy
-
-AetherSynth is designed to be a "delightful non-distraction"—an environment that prioritizes fluid, organic motion and immersive visuals over traditional gamified interaction.
 
 ---
 Created by [notdevank](https://github.com/notdevank).
