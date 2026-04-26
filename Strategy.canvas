@@ -1,0 +1,6 @@
+{
+	"nodes":[
+		{"id":"root-node","x":0,"y":0,"width":400,"height":200,"type":"text","text":"# AetherSynth Strategy\nCore architecture for the generative audio-visual environment."}
+	],
+	"edges":[]
+}
