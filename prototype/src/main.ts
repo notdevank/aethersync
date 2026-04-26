@@ -35,12 +35,13 @@ class App {
       this.animate();
     };
 
-    // BURGER MENU TOGGLE
     const burger = document.getElementById('burger');
     const controls = document.getElementById('controls');
-    burger!.onclick = () => {
-      controls!.classList.toggle('open');
-    };
+    if (burger && controls) {
+      burger.onclick = () => {
+        controls.classList.toggle('open');
+      };
+    }
 
     let isDragging = false;
     let previousMouseX = 0;
@@ -63,7 +64,7 @@ class App {
 
     window.addEventListener('mouseup', () => { isDragging = false; });
 
-    window.addEventListener('keydown', (e) => {
+    window.addEventListener('keydown', () => {
       const origin = new THREE.Vector3((Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2);
       this.visualEngine.triggerRipple(origin);
       gsap.to(document.body, { backgroundColor: '#1E293B', duration: 0.1, yoyo: true, repeat: 1 });
@@ -71,7 +72,6 @@ class App {
   }
 
   setupControls() {
-    // Sliders
     const ids = ['size', 'intensity', 'rainbowSpeed', 'audioSens', 'bloom'];
     ids.forEach(id => {
       const el = document.getElementById(id) as HTMLInputElement;
@@ -88,7 +88,6 @@ class App {
       };
     });
 
-    // Palette Buttons
     const buttons = document.querySelectorAll('.palette-btn');
     buttons.forEach(btn => {
       (btn as HTMLButtonElement).onclick = () => {

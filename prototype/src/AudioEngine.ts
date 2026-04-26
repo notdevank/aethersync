@@ -1,33 +1,45 @@
 export class AudioEngine {
   private audioContext: AudioContext | null = null;
   private analyser: AnalyserNode | null = null;
-  private dataArray: Uint8Array | null = null;
+  private dataArray: any = null;
   private stream: MediaStream | null = null;
 
-  public async init() {
-    this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    this.analyser = this.audioContext.createAnalyser();
-    this.analyser.fftSize = 256;
-    
-    this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const source = this.audioContext.createMediaStreamSource(this.stream);
-    source.connect(this.analyser);
-    
-    this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+  public isInitialized = false;
+
+  async init() {
+    try {
+      this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      this.audioContext = new AudioContext();
+      const source = this.audioContext.createMediaStreamSource(this.stream);
+      this.analyser = this.audioContext.createAnalyser();
+      this.analyser.fftSize = 256;
+      source.connect(this.analyser);
+
+      const bufferLength = this.analyser.frequencyBinCount;
+      this.dataArray = new Uint8Array(bufferLength);
+      this.isInitialized = true;
+      console.log('Audio Engine Initialized');
+    } catch (err) {
+      console.error('Error initializing audio engine:', err);
+    }
   }
 
-  public getAudioData() {
+  getAudioData() {
     if (!this.analyser || !this.dataArray) return { bass: 0, mids: 0, treble: 0 };
-    
+
     this.analyser.getByteFrequencyData(this.dataArray);
-    
+
+    let bass = 0;
+    let mids = 0;
+    let treble = 0;
+
     const len = this.dataArray.length;
-    let bass = 0, mids = 0, treble = 0;
-    
-    for (let i = 0; i < len * 0.2; i++) bass += this.dataArray[i];
-    for (let i = Math.floor(len * 0.2); i < len * 0.7; i++) mids += this.dataArray[i];
-    for (let i = Math.floor(len * 0.7); i < len; i++) treble += this.dataArray[i];
-    
+    for (let i = 0; i < len; i++) {
+      if (i < len * 0.2) bass += this.dataArray[i];
+      else if (i < len * 0.7) mids += this.dataArray[i];
+      else treble += this.dataArray[i];
+    }
+
     return {
       bass: Math.pow(bass / (len * 0.2 * 255), 2.0) * 1.0,
       mids: Math.pow(mids / (len * 0.5 * 255), 2.0) * 1.0,
