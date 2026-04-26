@@ -105,14 +105,14 @@ export class VisualEngine {
   private composer: EffectComposer;
   private bloomPass: UnrealBloomPass;
   
-  private mesh: THREE.Mesh;
-  private material: THREE.ShaderMaterial;
+  private mesh!: THREE.Mesh;
+  private material!: THREE.ShaderMaterial;
   private nebula: THREE.Mesh;
   private nebulaMaterial: THREE.ShaderMaterial;
   
-  private stars: THREE.Points;
+  private stars!: THREE.Points;
   private blobLight: THREE.PointLight;
-  private dust: THREE.Points;
+  private dust!: THREE.Points;
   private meteors: Meteor[] = [];
   private explosions: Explosion[] = [];
 
@@ -167,7 +167,6 @@ export class VisualEngine {
 
     this.createRealisticStars();
     this.createAetherDust();
-
     this.createBlob();
 
     window.addEventListener('resize', this.onResize.bind(this));
@@ -312,7 +311,7 @@ export class VisualEngine {
     if (!this.mesh) return;
     this.mesh.rotation.y += deltaX;
     this.mesh.rotation.x += deltaY;
-    this.stars.rotation.y += deltaX * 0.1;
+    if (this.stars) this.stars.rotation.y += deltaX * 0.1;
   }
 
   public update(time: number, audioParams: { bass: number; mids: number; treble: number }) {
@@ -373,7 +372,7 @@ export class VisualEngine {
     this.nebulaMaterial.uniforms.uTime.value = time;
     this.nebulaMaterial.uniforms.uBass.value = audioParams.bass;
 
-    this.stars.rotation.y += 0.0005;
+    if (this.stars) this.stars.rotation.y += 0.0005;
     this.mesh.rotation.y += (0.001 + audioParams.bass * 0.02);
     const scale = 1.0 + (audioParams.bass > 0.05 ? audioParams.bass * 0.5 : 0);
     this.mesh.scale.set(scale, scale, scale);
